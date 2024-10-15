@@ -1,0 +1,43 @@
+﻿@model SportsStore.Models.ViewModels.ProductsListViewModel
+
+@foreach (var p in Model.Products?? Enumerable.Empty<Product>())
+{
+    // Overview: 
+    // **** this will display the data *****
+    // Tech:
+    // partial views are views created that are used in mutliple places to help
+    // alleviate code duplication. Simply create a partial View called ProductSummary.cshtml
+    // that has a Product type as its injected model ( @model Product ) then call it wherever its
+    // needed as follows. Note the actual object 'p' is passed to the @model
+    //
+    // **** display the data
+    <partial name="ProductSummary" model="p" />
+   
+    @* original code
+    <div>
+        <h3>@p.Name</h3>
+        @p.Description
+        <h4>@p.Price.ToString("c")</h4>
+    </div>*@
+}
+@* Overview:
+    ****  create the buttons and the href behind the buttons ****
+   It calls the Process method in the PageLinkTagHelper class. This method
+   will create the html for the buttons including the refs behind each one.
+
+   Tech: page-model is a Razor attrubute that tells Razor to look for the PageLinkTagHelper class in order to create the html
+        
+  the actual Html retuned from the PageLinkTagHelper.Process class is as follows:
+
+        <a href=\"/?productPage=1\">1</a>
+        <a href=\"/?productPage=2\">2</a>
+        <a href=\"/?productPage=3\">3</a>
+
+        so we are saying TAG the href valus onto the end of the base url
+    *@
+    @* **** display the buttons *@
+<div page-model="@Model?.PagingInfo" page-action="Index" page-classes-enabled="true"
+     page-class="btn" page-class-normal="btn-outline-dark"
+     page-class-selected="btn-primary" page-url-category="@Model?.CurrentCategory!"
+     class="btn-group pull-right m-1">
+</div>
